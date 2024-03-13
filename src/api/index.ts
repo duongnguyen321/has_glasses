@@ -14,9 +14,8 @@ export async function start(
 	type: InputTypes,
 	labeledFaceDescriptors: labelTypes
 ): Promise<number> {
-	console.log('type: ', type);
 	const container = document.querySelector('div.container') as HTMLDivElement;
-	const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 1);
+	const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.9);
 	let canvas: HTMLCanvasElement;
 	let interval = 0;
 	if (type === 'image') {
@@ -90,10 +89,12 @@ export async function start(
 
 export function loadLabeledImages() {
 	const labels = ['glasses', 'un_glasses'];
+	let time = 5;
+	const max = 11;
 	return Promise.all(
 		labels.map(async (label) => {
 			const descriptions = [];
-			for (let i = 1; i <= 5; i++) {
+			for (let i = 1; i <= max; i++) {
 				const img = await faceapi.fetchImage(
 					`/labeled_images/${label}/${i}.jpg`
 				);
@@ -102,6 +103,11 @@ export function loadLabeledImages() {
 					.withFaceLandmarks()
 					.withFaceDescriptor();
 				if (detections) descriptions.push(detections.descriptor);
+				if (i === max) {
+					time--;
+					i = 1;
+				}
+				if (time <= 0) break;
 			}
 
 			return new faceapi.LabeledFaceDescriptors(label, descriptions);

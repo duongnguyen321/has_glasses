@@ -16,7 +16,7 @@ export default function App() {
 				labelRef.current = label;
 			})
 			.finally(() => setLoading(false));
-	}, [loading]);
+	}, []);
 
 	return (
 		<>

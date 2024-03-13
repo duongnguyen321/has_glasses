@@ -22,7 +22,7 @@ export default function Video({
 							if (videoRef.current) videoRef.current.srcObject = stream;
 						})
 						.catch((err) => {
-							console.log(err);
+							console.error(err);
 						});
 				}
 			});
