@@ -49,6 +49,7 @@ export async function start(
 				drawBox.draw(canvas);
 			});
 		});
+		return 0;
 	}
 	if (type === 'video') {
 		let video = document.querySelector('video#videoScreen') as HTMLVideoElement;
@@ -81,8 +82,9 @@ export async function start(
 					});
 					drawBox.draw(canvas);
 				});
-			}, 200);
+			}, 80);
 		});
+		return interval;
 	}
 	return interval;
 }
